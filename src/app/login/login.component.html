@@ -1,0 +1,18 @@
+
+<div class="container-fluid fill no-padding background">
+  <div class="col-md-12 ">      
+    <div class="panel panel-default login_container">
+      <div class="panel-heading">ez-Update</div>
+      <div class="panel-body">
+        <div>
+          <form [formGroup]="loginForm">
+            <input formControlName="user" name="user" type="text" [(ngModel)]="user" required placeholder="username" class="form-control">
+            <input formControlName="password" name="password" type="password" [(ngModel)]="password" placeholder="password" class="form-control">
+            <button (click)="login()"  class="btn btn-primary btn-block" >Sign in</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>          
+</div>
+
