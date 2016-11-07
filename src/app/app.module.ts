@@ -17,6 +17,7 @@ import {DesktopComponent} from './desktop/desktop.component';
 import {appRouting, appRoutingProviders} from './app.routes';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AddTeamComponent } from './add-team/add-team.component';
+import { TeamListComponent } from './navbar/team-list/team-list.component';
 
 
 const myFirebaseAuthConfig = {
@@ -29,7 +30,7 @@ const myFirebaseAuthConfig = {
   declarations: [
     AppComponent,
     LoginComponent,    
-    DesktopComponent, NavbarComponent, AddTeamComponent
+    DesktopComponent, NavbarComponent, AddTeamComponent, TeamListComponent
   ],
   imports: [
     BrowserModule,

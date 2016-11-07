@@ -1,0 +1,11 @@
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Teams
+  </a>
+  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">    
+    <a class="dropdown-item" *ngFor="let team of teams | async">
+      {{ team.name }}
+    </a>
+    <a class="dropdown-item" href="#">Join a Team</a>
+  </div>
+</li>
