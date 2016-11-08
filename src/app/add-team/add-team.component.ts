@@ -14,9 +14,16 @@ export class AddTeamComponent implements OnInit {
   ngOnInit() {
   }
 
+  team_name:string; 
+  
   addTeam() {
     const teams = this.af.database.list('teams');    
-    teams.push(new Team('NewTeam',this.as.uid));       
+    teams.push(new Team(this.team_name ,this.as.uid))
+      .then((newTeam) => this.addTeamToUser(newTeam.key, this.as.uid));       
+  }
+
+  addTeamToUser(teamKey, userId) {
+    this.af.database.list('/users/'+userId+'/teams').push(teamKey);
   }
 
 }

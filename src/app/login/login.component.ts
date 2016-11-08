@@ -43,18 +43,6 @@ export class LoginComponent implements OnInit {
   }
 
   initUserPreferences(userId) {
-    let startLabels = ['#D1F2A5','#FFC48C','#F56991'];
-    let item: FirebaseObjectObservable<any>;
-    item = this.af.database.object('/users/'+userId+'/labels');
-    const userLabels = this.af.database.list('users/'+userId+'/labels');
-    this.authService.userLabels = userLabels;
-    item.subscribe(item => {if (!item.$exists()) {
-        for (var i = 0; i<startLabels.length;i++) {
-          userLabels.push({'color':startLabels[i]})
-        }
-      }
-    });
-
   }
   
 
