@@ -5,6 +5,7 @@ import 'rxjs/add/operator/filter';
 import {Team} from '../../models/team'
 import {AuthService} from '../../auth.service';
 import {Observable} from 'rxjs/Rx';
+import {Subject} from 'rxjs/Subject';
 
 @Component({
   selector: 'app-team-list',
@@ -12,26 +13,30 @@ import {Observable} from 'rxjs/Rx';
   styleUrls: ['./team-list.component.css']
 })
 export class TeamListComponent implements OnInit {
-  teamIds: Observable<any[]>;
-  team: FirebaseObjectObservable<Team>;
-  //public teams: Team[];
-  teams: Observable<any>;
-
+  teamIds: Observable<any[]>;  
+  teams: FirebaseListObservable<any>;
+  userTeams = [];
   constructor(af: AngularFire, as: AuthService) { 
-    /*
-    let cTeams: Team[];
-    af.database.list('/users/'+as.uid+'/teams')
-      .map(teamID => {
-        console.log(teamID);
-        af.database.object('/teams/'+teamID[0].$value).subscribe(team => {this.teams.push(team)});
-      });    
-      */
-    this.teams = af.database.list('/teams').map(_teams => {
-      return _teams.map(_team => {
-        console.log(_team);
-        return _team;
-      })
-    }) 
+
+    const subject = new Subject(); 
+    this.teams = af.database.list('/teams', {
+      query: {
+        orderByKey: true,
+        equalTo: subject 
+      }
+    })
+    this.teams.subscribe(queriedItems => {        
+        if (queriedItems.length > 0) {
+          this.userTeams.push(queriedItems[0]);
+        }                
+    });
+    this.teamIds = af.database.list('users/'+as.uid+'/teams')
+    this.teamIds.subscribe(key => {
+      this.userTeams = [];
+      key.map(_key => {               
+        subject.next(_key.$value);
+      })      
+    })    
   }
 
   ngOnInit() {
