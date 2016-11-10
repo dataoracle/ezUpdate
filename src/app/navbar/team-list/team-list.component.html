@@ -3,7 +3,7 @@
     Teams
   </a>
   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">    
-    <a class="dropdown-item" *ngFor="let team of userTeams">
+    <a class="dropdown-item" *ngFor="let team of userTeams; let i=index" (click)="changeTeam(i)">
       {{ team.name }}
     </a>
     <a class="dropdown-item" href="#">Join a Team</a>

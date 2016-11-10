@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output,EventEmitter } from '@angular/core';
 import {AngularFire, FirebaseListObservable,FirebaseObjectObservable} from 'angularfire2'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
@@ -6,6 +6,8 @@ import {Team} from '../../models/team'
 import {AuthService} from '../../auth.service';
 import {Observable} from 'rxjs/Rx';
 import {Subject} from 'rxjs/Subject';
+
+import {teamListService} from './team-list.service';
 
 @Component({
   selector: 'app-team-list',
@@ -16,7 +18,13 @@ export class TeamListComponent implements OnInit {
   teamIds: Observable<any[]>;  
   teams: FirebaseListObservable<any>;
   userTeams = [];
-  constructor(af: AngularFire, as: AuthService) { 
+  team = Team;
+
+  //@Output() onSelect = new EventEmitter<string>();
+
+
+
+  constructor(af: AngularFire, as: AuthService, private tls: teamListService) { 
 
     const subject = new Subject(); 
     this.teams = af.database.list('/teams', {
@@ -40,6 +48,12 @@ export class TeamListComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  changeTeam(index) {
+    console.log(this.userTeams[index]);
+    //this.onSelect.emit(this.userTeams[index].name);
+    this.tls.selectTeam(this.userTeams[index].name);
   }
 
 }
