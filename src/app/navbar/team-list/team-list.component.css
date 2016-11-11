@@ -1,0 +1,12 @@
+.custom-btn-settings {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.custom-link-danger{
+    color:#FF0000!important;
+}
+
+.dropdown-menu a {
+    cursor: pointer;
+}

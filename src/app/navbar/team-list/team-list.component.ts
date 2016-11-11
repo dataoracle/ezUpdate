@@ -19,6 +19,10 @@ export class TeamListComponent implements OnInit {
   teams: FirebaseListObservable<any>;
   userTeams = [];
   team = Team;
+  
+  selectedTeam:string = 'Teams';
+  isTeamSelected:boolean = false;
+
 
   //@Output() onSelect = new EventEmitter<string>();
 
@@ -50,10 +54,10 @@ export class TeamListComponent implements OnInit {
   ngOnInit() {
   }
 
-  changeTeam(index) {
-    console.log(this.userTeams[index]);
-    //this.onSelect.emit(this.userTeams[index].name);
+  changeTeam(index) {    
     this.tls.selectTeam(this.userTeams[index].name);
+    this.selectedTeam = this.userTeams[index].name;
+    this.isTeamSelected = true;
   }
 
 }
