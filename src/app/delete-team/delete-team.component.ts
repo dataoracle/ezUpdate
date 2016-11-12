@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {teamListService} from '../navbar/team-list/team-list.service'
-import {AngularFire} from 'angularfire2';
 import {Team} from '../models/team';
 
 @Component({
@@ -12,7 +11,7 @@ export class DeleteTeamComponent implements OnInit {
 
 teamToDelete: Team;
 
-  constructor(public tls: teamListService, public af: AngularFire ) { 
+  constructor(public tls: teamListService ) { 
     tls.selectedTeam$.subscribe(t => {
       this.teamToDelete = t;
     });
@@ -22,9 +21,8 @@ teamToDelete: Team;
   }
   
   deleteTeam() {
-    this.af.database.object('/teams/'+this.teamToDelete.$key).remove();
-    window.location.reload();
-
+    this.tls.removeTeam(this.teamToDelete.$key);
+    //window.location.reload();
   }
 
 

@@ -12,9 +12,7 @@ export class TeamViewerComponent implements OnInit {
   teamName:string = 'Please select or join a team!';
 
   constructor(private tls: teamListService) { 
-     tls.selectedTeam$.subscribe(t => {
-      this.teamName = t.name;
-    });
+      this.teamName = tls.isTeamSelectedName;
   }
 
   ngOnInit() {

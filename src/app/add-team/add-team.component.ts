@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AngularFire} from 'angularfire2';
 import {AuthService} from '../auth.service';
 import {Team} from '../models/team';
+import {teamListService} from '../navbar/team-list/team-list.service';
 @Component({
   selector: 'app-add-team',
   templateUrl: './add-team.component.html',
@@ -9,7 +10,7 @@ import {Team} from '../models/team';
 })
 export class AddTeamComponent implements OnInit {
 
-  constructor(public af: AngularFire, public as: AuthService) { }
+  constructor(public af: AngularFire, public as: AuthService, public tls: teamListService) { }
 
   ngOnInit() {
   }
@@ -17,13 +18,9 @@ export class AddTeamComponent implements OnInit {
   team_name:string; 
   
   addTeam() {
-    const teams = this.af.database.list('teams');    
-    teams.push(new Team(this.team_name ,this.as.uid))
-      .then((newTeam) => this.addTeamToUser(newTeam.key, this.as.uid));       
+   this.tls.addTeam(this.team_name);       
   }
 
-  addTeamToUser(teamKey, userId) {
-    this.af.database.list('/users/'+userId+'/teams').push(teamKey);
-  }
+
 
 }
