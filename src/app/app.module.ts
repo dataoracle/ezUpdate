@@ -19,6 +19,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AddTeamComponent } from './add-team/add-team.component';
 import { TeamListComponent } from './navbar/team-list/team-list.component';
 import { TeamViewerComponent } from './team-viewer/team-viewer.component';
+import { DeleteTeamComponent } from './delete-team/delete-team.component';
 
 
 const myFirebaseAuthConfig = {
@@ -31,7 +32,7 @@ const myFirebaseAuthConfig = {
   declarations: [
     AppComponent,
     LoginComponent,    
-    DesktopComponent, NavbarComponent, AddTeamComponent, TeamListComponent, TeamViewerComponent
+    DesktopComponent, NavbarComponent, AddTeamComponent, TeamListComponent, TeamViewerComponent, DeleteTeamComponent
   ],
   imports: [
     BrowserModule,

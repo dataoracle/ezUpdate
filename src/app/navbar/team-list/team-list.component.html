@@ -19,7 +19,7 @@
   <div class="dropdown-menu">
      <a class="dropdown-item" >Invite someone</a>
      <a class="dropdown-item" >New Activity</a>
-     <div class="dropdown-divider"></div>
-     <a class="dropdown-item custom-link-danger" >Delete Team</a>
+     <div class="dropdown-divider" *ngIf="this.isTeamSelectedOwner"></div>
+     <a class="dropdown-item custom-link-danger" *ngIf="this.isTeamSelectedOwner" data-toggle="modal" data-target=".delete-team-modal">Delete Team</a>
   </div>
 </div>

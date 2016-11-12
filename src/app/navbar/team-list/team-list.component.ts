@@ -17,18 +17,19 @@ import {teamListService} from './team-list.service';
 export class TeamListComponent implements OnInit {
   teamIds: Observable<any[]>;  
   teams: FirebaseListObservable<any>;
-  userTeams = [];
+  userTeams: Team[] = [];
   team = Team;
   
   selectedTeam:string = 'Teams';
   isTeamSelected:boolean = false;
+  isTeamSelectedOwner:boolean = false;
 
 
   //@Output() onSelect = new EventEmitter<string>();
 
 
 
-  constructor(af: AngularFire, as: AuthService, private tls: teamListService) { 
+  constructor(af: AngularFire, public as: AuthService, private tls: teamListService) { 
 
     const subject = new Subject(); 
     this.teams = af.database.list('/teams', {
@@ -55,9 +56,10 @@ export class TeamListComponent implements OnInit {
   }
 
   changeTeam(index) {    
-    this.tls.selectTeam(this.userTeams[index].name);
+    this.tls.selectTeam(this.userTeams[index]);
     this.selectedTeam = this.userTeams[index].name;
     this.isTeamSelected = true;
+    this.isTeamSelectedOwner = this.userTeams[index].created_by == this.as.uid; 
   }
 
 }
