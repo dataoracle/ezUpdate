@@ -34,15 +34,32 @@ export class LoginComponent implements OnInit {
             this.authService.uid = user.uid;
             this.authService.isLoggedIn = true;
             this.authService.email = user.auth.email;
-            this.initUserPreferences(user.uid);
-            this.authService.router.navigate(['/home']);
+            this.authService.name = user.auth.displayName;
+            this.authService.photoURL = user.auth.photoURL;
+            this.initUserPreferences(user.auth);                        
+            this.authService.router.navigate(['/home']);            
         } else {
             this.authService.isLoggedIn = false;
         }
     });
   }
 
-  initUserPreferences(userId) {
+  initUserPreferences(user:firebase.User) {
+    if (1==1) {
+      var photoRef = 'images/default.jpg';
+      this.authService.name = user.displayName || 'Unknown User';
+      var storage = firebase.storage();
+      var storageRef = storage.ref();
+      storageRef.child(photoRef).getDownloadURL().then(url => {
+        this.authService.photoURL = url;
+        user.updateProfile({
+        displayName:'Unknown User',
+        photoURL: this.authService.photoURL
+      })
+      }).catch(function(error) {
+        console.log(error);
+      });     
+    }     
   }
   
 

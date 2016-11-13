@@ -7,6 +7,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 
 import {AngularFire,FirebaseListObservable} from 'angularfire2';
+import * as firebase from 'firebase';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,8 @@ export class AuthService {
   uid: string;
   email: string;
   userLabels:FirebaseListObservable<any>;
+  name: string;
+  photoURL:string;
   
   // store the URL so we can redirect after logging in
   redirectUrl: string;
