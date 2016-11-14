@@ -5,3 +5,11 @@
     margin-left:10px;
     border:1px solid #ddd;
 }
+
+.custom-link-danger{
+    color:#FF0000!important;
+}
+
+.dropdown-menu a {
+    cursor: pointer;
+}

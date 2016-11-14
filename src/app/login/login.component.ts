@@ -22,11 +22,7 @@ export class LoginComponent implements OnInit {
           'user':this.userCtrl,
           'password':this.passCtrl        
         });
-
-        
   }
-
-
 
   ngOnInit() {
     var auth = this.authService.af.auth.subscribe( (user) => {
@@ -45,9 +41,9 @@ export class LoginComponent implements OnInit {
   }
 
   initUserPreferences(user:firebase.User) {
-    if (1==1) {
+    if (!this.authService.photoURL) {
       var photoRef = 'images/default.jpg';
-      this.authService.name = user.displayName || 'Unknown User';
+      this.authService.name = user.displayName || user.email;
       var storage = firebase.storage();
       var storageRef = storage.ref();
       storageRef.child(photoRef).getDownloadURL().then(url => {

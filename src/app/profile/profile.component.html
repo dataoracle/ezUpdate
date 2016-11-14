@@ -1,0 +1,36 @@
+<div class="modal fade profile-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Edit profile</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row profile-row">
+            <img id="big-profile-picture" src="{{this.authService.photoURL}}" class="profile-picture">
+        </div>
+        <div class="row profile-row">
+          <label class="btn btn-outline-info" for="my-file-selector">
+              <input id="my-file-selector" type="file" style="display:none;" (change)="readPicture($event)">
+              Change Picture
+          </label>
+        </div>
+        <div class="row profile-row">          
+            <form>
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" maxlength="20"
+                  [(ngModel)]="userName" name="name">
+              </div>
+            </form>                                 
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="saveProfile()">Update</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
