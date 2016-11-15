@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl,FormBuilder} from '@angular/forms'
+import {Router} from '@angular/router'
 import {AuthService} from '../auth.service';
 import {AngularFire, FirebaseListObservable,FirebaseObjectObservable} from 'angularfire2'
 
@@ -12,12 +13,12 @@ export class LoginComponent implements OnInit {
   
   user: string;
   password: string;
-
+  
   loginForm: FormGroup;
   userCtrl = new FormControl(this.user);
   passCtrl = new FormControl(this.password);  
 
-  constructor(fb: FormBuilder, public authService: AuthService, public af:AngularFire) {
+  constructor(fb: FormBuilder, public authService: AuthService, public af:AngularFire,private router: Router) {
     this.loginForm = new FormGroup({
           'user':this.userCtrl,
           'password':this.passCtrl        
@@ -63,8 +64,12 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.user, this.password);
   }
 
-  logout() {
-    this.authService.logout();
+  logout() {        
+    // this.authService.af.auth.unsubscribe();    
+    // this.tls.teamsSubs.unsubscribe();
+    // this.tls.teamsIDsSubs.unsubscribe();
+    //this.authService.logout();
+    this.router.navigate(['/login']);                    
   }
 
 }

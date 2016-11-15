@@ -12,7 +12,8 @@ export class teamListService {
   public availableTeams: Team[] = [];
   public isTeamSelected: Boolean = false;
   public isTeamSelectedName: string = 'Teams';
-
+  public teamsIDsSubs;
+  public teamsSubs;
   teamsIds: Observable<any[]>;
   xxx = new Subject<Team[]>();
 
@@ -27,7 +28,7 @@ export class teamListService {
       }
     })
 
-    this.teams.subscribe(queriedItems => {
+    this.teamsSubs = this.teams.subscribe(queriedItems => {
       if (queriedItems.length > 0) {
         console.log('pushing -> ' + queriedItems[0].name)
         this.availableTeams.push(queriedItems[0]);
@@ -35,7 +36,7 @@ export class teamListService {
     });
 
     this.teamsIds = af.database.list('/users/'+as.uid+'/teams');
-    this.teamsIds.subscribe(keys => {
+    this.teamsIDsSubs = this.teamsIds.subscribe(keys => {
       console.log('processing key');
       keys.map(_key => {
         userTeamIDs.next(_key.$value);
