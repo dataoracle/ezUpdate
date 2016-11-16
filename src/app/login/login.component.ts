@@ -65,11 +65,10 @@ export class LoginComponent implements OnInit {
   }
 
   logout() {        
-    // this.authService.af.auth.unsubscribe();    
-    // this.tls.teamsSubs.unsubscribe();
-    // this.tls.teamsIDsSubs.unsubscribe();
-    //this.authService.logout();
-    this.router.navigate(['/login']);                    
+    window.location.href = '/login';
+    this.authService.af.auth.unsubscribe();    
+    this.authService.logout();
+    
   }
 
 }
