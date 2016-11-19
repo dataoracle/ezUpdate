@@ -8,6 +8,12 @@
     <a class="btn btn-secondary btn-lg" role="button" >Join Team!</a>
   </p>
 </div>
-<h2 *ngIf="tls.isTeamSelected">
-  {{tls.isTeamSelectedName}}
-</h2>
+<div class="jumbotron text-xs-center" *ngIf="tls.isTeamSelected">
+  <h1 class="display-3">{{tls.isTeamSelectedName}}</h1>
+  <p class="lead">Ooops! Looks like this team doesn't have activities yet!</p>
+  <hr class="my-2">
+  <p>Activities are assigned to team members so they can provides updates on its status. Create one now, it's free!</p>
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" role="button" data-toggle="modal" data-target=".add-team-modal">New Activity</a>
+  </p>
+</div>
