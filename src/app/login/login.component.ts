@@ -33,15 +33,18 @@ export class LoginComponent implements OnInit {
             this.authService.email = user.auth.email;
             this.authService.name = user.auth.displayName;
             this.authService.photoURL = user.auth.photoURL;
-            this.initUserPreferences(user.auth);                        
-            this.authService.router.navigate(['/home']);            
+            this.initUserPreferences(user.auth, user.uid);                        
+            this.authService.router.navigate(['/home']);    
         } else {
             this.authService.isLoggedIn = false;
         }
     });
   }
 
-  initUserPreferences(user:firebase.User) {
+  initUserPreferences(user:firebase.User, userId:string) {
+    const itemObservable = this.af.database.object('/users/'+userId);
+    itemObservable.update({ emailAddress: user.email , displayName:user.displayName,photoURL:user.photoURL});
+
     if (!this.authService.photoURL) {
       var photoRef = 'images/default.jpg';
       this.authService.name = user.displayName || user.email;
@@ -56,7 +59,7 @@ export class LoginComponent implements OnInit {
       }).catch(function(error) {
         console.log(error);
       });     
-    }     
+    } 
   }
   
 

@@ -8,20 +8,26 @@
         <h4 class="modal-title">add new activity</h4>
       </div>
       <div class="modal-body">
-        <form>
+        {{newActivity.status}}
+        <form [formGroup]="newActivity">
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" required  name="name" [(ngModel)]="name">
+            <input type="text" class="form-control" id="name" required  name="name" formControlName="name">
             <label for="description">Description</label>
-            <input type="text" class="form-control" id="description" required  name="description" [(ngModel)]="description">
+            <input type="text" class="form-control" id="description" required  name="description" formControlName="description">
             <label for="assigned_user_email">Responsible</label>
-            <input type="text" class="form-control" id="assigned_user_email" required  name="assigned_user_email" [(ngModel)]="assigned_user_email">
+            <input type="text" class="form-control" id="assigned_user_email" required  name="assigned_user_email" formControlName="assignedEmail">
+            <div *ngIf="newActivity.controls.assignedEmail.pending">Checking...</div>
+            <div *ngIf="newActivity.controls.assignedEmail.invalid && newActivity.controls.assignedEmail.touched">No user found</div>
+            <ul *ngIf="userIsFound" class="list-group assigned-user">
+              <li class="list-group-item"><img class="profile-picture" [src]="user.photoURL">{{user.displayName}}</li>
+            </ul>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary"  (click)="addActivity()">Save changes</button>
+        <button type="button" class="btn btn-primary"  (click)="addActivity()" [disabled]="!newActivity.valid">Save changes</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

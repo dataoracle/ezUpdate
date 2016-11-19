@@ -23,7 +23,6 @@ import { DeleteTeamComponent } from './delete-team/delete-team.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AddActivityComponent } from './add-activity/add-activity.component';
 
-
 const myFirebaseAuthConfig = {
   provider: AuthProviders.Password,
   method: AuthMethods.Password,
