@@ -46,7 +46,7 @@ export class ProfileComponent implements OnInit {
             displayName: this.userName || 'Unknown User',
             photoURL: uploadTask.snapshot.downloadURL || this.authService.photoURL
           }).then(()=>{
-            this.authService.name = this.userName || 'Unknown User';
+            this.authService.name = this.userName || 'Unknown User';            
             this.authService.photoURL = uploadTask.snapshot.downloadURL;          
             $('.profile-modal').modal('hide');
           });
