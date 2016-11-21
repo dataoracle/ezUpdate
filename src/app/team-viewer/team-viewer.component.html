@@ -17,3 +17,7 @@
     <a class="btn btn-primary btn-lg" role="button" data-toggle="modal" data-target=".add-activity-modal">New Activity</a>
   </p>
 </div>
+
+<ul *ngIf="isTeamSelected">
+  <li *ngFor="let activity of activities | async">{{activity.name}}</li>
+</ul>

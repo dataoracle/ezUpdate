@@ -1,6 +1,8 @@
 import { Component, OnInit} from '@angular/core';
 import {teamListService} from '../navbar/team-list/team-list.service'
 import {Team} from '../models/team'
+import {AngularFire, FirebaseListObservable} from 'angularfire2'
+import {Activity} from '../models/activity'
 
 @Component({
   selector: 'app-team-viewer',
@@ -10,12 +12,19 @@ import {Team} from '../models/team'
 export class TeamViewerComponent implements OnInit {
 
   teamName:string = 'Please select or join a team!';
+  activities: FirebaseListObservable<Activity[]>
+  team: Team;
+  isTeamSelected: boolean = false;
 
-  constructor(private tls: teamListService) { 
+  constructor(private tls: teamListService, public af:AngularFire) { 
       this.teamName = tls.isTeamSelectedName;
   }
 
   ngOnInit() {
+    this.tls.selectedTeam$.subscribe((team) => {
+     this.isTeamSelected = true;
+     this.activities = this.af.database.list('/teams/'+this.team.$key+'/activities');
+    })
   }
 
 

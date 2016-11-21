@@ -1,9 +1,12 @@
+import {Activity} from './Activity';
+
 export class Team {
     created_on: number;
     created_by: string;
     name: string;    
     access = [];     
     is_private: boolean;
+    activities: Activity[];
     $key: string;
     
 
@@ -13,5 +16,6 @@ export class Team {
         this.access.push(creator_uid);        
         this.is_private = false;
         this.created_by = creator_uid;
+        this.activities = [];
     }
 }

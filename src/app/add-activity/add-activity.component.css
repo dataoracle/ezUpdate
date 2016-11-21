@@ -10,3 +10,11 @@
 .assigned-user {
     margin-top:5px;
 }
+
+.input-invalid {
+    border-left:3px solid orangered;
+}
+
+.input-valid {
+    border-left:3px solid seagreen;
+}

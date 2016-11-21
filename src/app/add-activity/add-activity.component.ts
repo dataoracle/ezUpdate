@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Activity} from '../models/activity';
-import {FirebaseListObservable} from 'angularfire2';
+import {AngularFire, FirebaseListObservable} from 'angularfire2';
 import {FormGroup, FormBuilder, Validators,FormControl} from '@angular/forms'
+import {teamListService} from '../navbar/team-list/team-list.service'
+
 
 @Component({
   selector: 'app-add-activity',
@@ -15,13 +17,13 @@ export class AddActivityComponent implements OnInit {
   assigned_to: string;
   assigned_user_email:string;
   userLkp: FirebaseListObservable<any>;
-
+  isSaving: boolean = false;
   newActivity: FormGroup;
 
   user: any;
   userIsFound: boolean;
 
-  constructor(fb:FormBuilder) {
+  constructor(fb:FormBuilder, public af:AngularFire, public tls:teamListService) {
     this.newActivity = fb.group({
       name:['',Validators.required],
       description:[],
@@ -33,18 +35,21 @@ export class AddActivityComponent implements OnInit {
   }
 
   addActivity() {
-    // fetch the user firebase ID from user email
-    // this.userLkp = this.uls.userIDbyEmail(this.assigned_user_email);
-    // this.userLkp.subscribe(user => {      
-    //   console.log(user);
-    //   console.log(new Activity(this.name, this.description, user.key));
-    // })
-    console.log(this.newActivity);
-    
+    this.isSaving = true;
+    this.af.database.list('/teams/'+this.tls.isTeamSelectedKey+'/activities')
+        .push(new Activity(this.newActivity.controls['name'].value,
+                           this.newActivity.controls['description'].value, 
+                           this.user.key))
+        .then(() => {
+            this.isSaving = false;
+            $('.add-activity-modal').modal('hide');
+        })
   }
 
-  userFound(user) {
-    console.log(user);
+  resetModal(value: any = undefined) {
+      this.newActivity.reset(value);
+      this.userIsFound = false;
+      this.user = null;
   }
 
   asyncUser(control: FormControl) {

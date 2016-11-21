@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
     itemObservable.update({ emailAddress: user.email , displayName:user.displayName,photoURL:user.photoURL});
 
     if (!this.authService.photoURL) {
+      console.log('changing picture...');
       var photoRef = 'images/default.jpg';
       this.authService.name = user.displayName || user.email;
       var storage = firebase.storage();

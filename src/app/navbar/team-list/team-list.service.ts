@@ -12,10 +12,12 @@ export class teamListService {
   public availableTeams: Team[] = [];
   public isTeamSelected: Boolean = false;
   public isTeamSelectedName: string = 'Teams';
+  public isTeamSelectedKey: string;
   public teamsIDsSubs;
   public teamsSubs;
+  public team; 
   teamsIds: Observable<any[]>;
-  xxx = new Subject<Team[]>();
+
 
   teams: FirebaseListObservable<any>;
   
@@ -51,6 +53,7 @@ export class teamListService {
   // Service message commands
   selectTeam(team: Team) {    
     this.isTeamSelectedName = team.name;
+    this.isTeamSelectedKey = team.$key;
     this.selectedTeam.next(team);
     this.isTeamSelected = true;
   }

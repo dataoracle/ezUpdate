@@ -8,16 +8,17 @@
         <h4 class="modal-title">add new activity</h4>
       </div>
       <div class="modal-body">
-        {{newActivity.status}}
         <form [formGroup]="newActivity">
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" required  name="name" formControlName="name">
+            <input type="text" class="form-control" id="name" required  name="name" formControlName="name" 
+              [class.input-invalid] = "newActivity.controls.name.invalid && newActivity.controls.name.touched" [class.input-valid]="newActivity.controls.name.valid">
             <label for="description">Description</label>
-            <input type="text" class="form-control" id="description" required  name="description" formControlName="description">
+            <textarea type="text" class="form-control" id="description"  name="description" formControlName="description" rows="3"></textarea>
             <label for="assigned_user_email">Responsible</label>
-            <input type="text" class="form-control" id="assigned_user_email" required  name="assigned_user_email" formControlName="assignedEmail">
-            <div *ngIf="newActivity.controls.assignedEmail.pending">Checking...</div>
+            <input type="text" class="form-control" id="assigned_user_email" required  name="assigned_user_email" formControlName="assignedEmail"
+            [class.input-invalid] = "newActivity.controls.assignedEmail.invalid && newActivity.controls.assignedEmail.touched" [class.input-valid]="newActivity.controls.assignedEmail.valid">
+            <div *ngIf="newActivity.controls.assignedEmail.pending"><i class="fa fa-circle-o-notch fa-spin"></i></div>
             <div *ngIf="newActivity.controls.assignedEmail.invalid && newActivity.controls.assignedEmail.touched">No user found</div>
             <ul *ngIf="userIsFound" class="list-group assigned-user">
               <li class="list-group-item"><img class="profile-picture" [src]="user.photoURL">{{user.displayName}}</li>
@@ -27,7 +28,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary"  (click)="addActivity()" [disabled]="!newActivity.valid">Save changes</button>
+        <button type="button" class="btn btn-primary"  (click)="addActivity()" [disabled]="!newActivity.valid">Save changes
+          <i class="fa fa-circle-o-notch fa-spin" *ngIf="isSaving"></i>
+        </button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
