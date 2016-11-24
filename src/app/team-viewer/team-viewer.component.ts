@@ -15,15 +15,20 @@ export class TeamViewerComponent implements OnInit {
   activities: FirebaseListObservable<Activity[]>
   team: Team;
   isTeamSelected: boolean = false;
+  hasActivities: boolean;
 
   constructor(private tls: teamListService, public af:AngularFire) { 
       this.teamName = tls.isTeamSelectedName;
   }
 
   ngOnInit() {
-    this.tls.selectedTeam$.subscribe((team) => {
+    this.tls.selectedTeam$.subscribe((team) => {     
      this.isTeamSelected = true;
+     this.team = team;
      this.activities = this.af.database.list('/teams/'+this.team.$key+'/activities');
+     this.activities.subscribe((activity) => {       
+       this.hasActivities = activity.length > 0;        
+     })
     })
   }
 
