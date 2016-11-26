@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../auth.service';
+import {AngularFire} from  'angularfire2';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +13,7 @@ export class ProfileComponent implements OnInit {
   selectedFile: File;
   userName: string = this.authService.name;
 
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService, public af: AngularFire) { }
 
   ngOnInit() {
   }
@@ -40,7 +41,10 @@ export class ProfileComponent implements OnInit {
       () => {      
       },(error) => {
           console.log(error);
-      },() => {      
+      },() => {
+        const itemObservable = this.af.database.object('/users/'+this.authService.uid);
+        itemObservable.update({displayName:this.userName || 'Unknown User',photoURL: uploadTask.snapshot.downloadURL || this.authService.photoURL});      
+        
         this.authService.af.auth.subscribe(user=>{
           user.auth.updateProfile({
             displayName: this.userName || 'Unknown User',
@@ -53,6 +57,8 @@ export class ProfileComponent implements OnInit {
         });                        
       });
     } else if(this.userName) {
+        const itemObservable = this.af.database.object('/users/'+this.authService.uid);
+        itemObservable.update({displayName:this.userName ,photoURL: this.authService.photoURL});
         this.authService.af.auth.subscribe(user=>{
           user.auth.updateProfile({
             displayName: this.userName,
