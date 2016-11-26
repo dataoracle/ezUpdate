@@ -42,8 +42,8 @@ export class LoginComponent implements OnInit {
   }
 
   initUserPreferences(user:firebase.User, userId:string) {
-    const itemObservable = this.af.database.object('/users/'+userId);
-    itemObservable.update({ emailAddress: user.email , displayName:user.displayName,photoURL:user.photoURL});
+    //const itemObservable = this.af.database.object('/users/'+userId);
+    //itemObservable.update({ emailAddress: user.email , displayName:user.displayName,photoURL:user.photoURL});
 
     if (!this.authService.photoURL) {
       console.log('changing picture...');
