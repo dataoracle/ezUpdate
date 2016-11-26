@@ -6,15 +6,14 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 
-import {AngularFire,FirebaseListObservable} from 'angularfire2';
+import {AngularFire} from 'angularfire2';
 import * as firebase from 'firebase';
 
 @Injectable()
 export class AuthService {
   isLoggedIn: boolean = false;
   uid: string;
-  email: string;
-  userLabels:FirebaseListObservable<any>;
+  email: string;  
   name: string;
   photoURL:string;
   
@@ -22,7 +21,7 @@ export class AuthService {
   redirectUrl: string;
 
   constructor(public af: AngularFire,public router: Router) {}
-
+  
   login(user, password) {
     this.af.auth.login({ email: user, password:password })
         .catch((error) => console.log(error));
