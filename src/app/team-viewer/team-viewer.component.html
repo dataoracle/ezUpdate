@@ -19,12 +19,15 @@
 </div>
 
 <div *ngIf="isTeamSelected && hasActivities">
-  <div class="card-group">
-    <div *ngFor="let activity of activities | async" class="card card-block" style="width:4rem; margin-right:0.5rem">
-      <h4 class="card-title">{{activity.name}}</h4>
-      <p class="card-text">{{activity.description}}</p>
-      <a href="#" class="card-link">Card link</a>
-    </div>
+  <h1>Priority Activitities</h1>
+  <div class="row">    
+      <div *ngFor="let activity of activities | async" class="col-sm-3">
+        <div class="card card-block">
+          <h4 class="card-title">{{activity.name}}</h4>
+          <p class="card-text">{{activity.description}}</p>
+          <a href="#" class="card-link">Card link</a>
+        </div>
+      </div>
   </div>
 </div>
 
