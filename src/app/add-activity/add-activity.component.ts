@@ -36,14 +36,17 @@ export class AddActivityComponent implements OnInit {
 
   addActivity() {
     this.isSaving = true;
-    this.af.database.list('/teams/'+this.tls.isTeamSelectedKey+'/activities')
-        .push(new Activity(this.newActivity.controls['name'].value,
-                           this.newActivity.controls['description'].value, 
-                           this.user.key))
-        .then(() => {
-            this.isSaving = false;
-            $('.add-activity-modal').modal('hide');
-        })
+    Activity.withImage().then((url) => {
+        this.af.database.list('/teams/'+this.tls.isTeamSelectedKey+'/activities')
+            .push(new Activity(this.newActivity.controls['name'].value,
+                            this.newActivity.controls['description'].value, 
+                            this.user.key, url))
+            .then(() => {
+                this.isSaving = false;
+                $('.add-activity-modal').modal('hide');
+            })
+    })
+
   }
 
   resetModal(value: any = undefined) {
