@@ -26,9 +26,15 @@
           <img class="card-img-top" style="width:100%;height:auto;" [src]="activity.imageURL" alt="card image">
           <div class="card-block">                   
             <h4 class="card-title">{{activity.name}}</h4>
-            <p class="card-text">{{activity.description}}</p>
-            <a href="#" class="card-link">Card link</a>
+            <p class="card-text">{{activity.description}}</p>            
           </div>
+            <div class="btn-group">
+              <button class="btn btn-secondary btn-sm dropdown-toggle float-xs-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Actions
+              </button>
+              <div class="dropdown-menu">New Update</div>
+              <div class="dropdown-menu">Archive</div>
+            </div>          
         </div>
       </div>
   </div>
