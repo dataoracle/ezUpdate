@@ -5,3 +5,7 @@
 .btn-primary {
     color: #FFF!important;
 }
+
+.settings-group {
+    border:none;
+}

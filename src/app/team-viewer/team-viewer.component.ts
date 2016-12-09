@@ -16,6 +16,9 @@ export class TeamViewerComponent implements OnInit {
   team: Team;
   isTeamSelected: boolean = false;
   hasActivities: boolean;
+  updateText: string;
+  selectedActivity: string;
+  isSaving:boolean = false;
 
   constructor(private tls: teamListService, public af:AngularFire) { 
       this.teamName = tls.isTeamSelectedName;
@@ -32,5 +35,19 @@ export class TeamViewerComponent implements OnInit {
     })
   }
 
+  openModalUpdate(activityKey) {
+    this.selectedActivity = activityKey;
+    $('.add-update-modal').modal('show');
+
+  }
+  addUpdate(activityKey) {
+    this.isSaving = true;
+    this.af.database.list('/teams/'+this.team.$key+'/activities/'+activityKey+'/updates').push(this.updateText)
+      .then(() => {
+        this.isSaving = false;
+        this.updateText = '';
+        $('.add-update-modal').modal('hide');
+      })
+  }
 
 }

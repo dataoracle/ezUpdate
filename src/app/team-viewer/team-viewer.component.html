@@ -21,23 +21,53 @@
 <div *ngIf="isTeamSelected && hasActivities">
   <h1>Priority Activitities</h1>
   <div class="row">    
-      <div *ngFor="let activity of activities | async" class="col-md-3">        
-        <div class="card">
+      <div *ngFor="let activity of activities | async" class="col-md-5 col-lg-4 col-xl-3">        
+        <div class="card clearfix">
           <img class="card-img-top" style="width:100%;height:auto;" [src]="activity.imageURL" alt="card image">
           <div class="card-block">                   
-            <h4 class="card-title">{{activity.name}}</h4>
-            <p class="card-text">{{activity.description}}</p>            
+            <h5 class="card-title">{{activity.name}}</h5>
+            <app-update-box [activity]="team.$key+'|'+activity.$key"></app-update-box>       
           </div>
-            <div class="btn-group">
-              <button class="btn btn-secondary btn-sm dropdown-toggle float-xs-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Actions
+            <div class="btn-group float-xs-right">
+              <button class="btn btn-secondary btn-sm dropdown-toggle settings-group " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-gear"></i>
               </button>
-              <div class="dropdown-menu">New Update</div>
-              <div class="dropdown-menu">Archive</div>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item" (click)="openModalUpdate(activity.$key)" >New Update</a>
+                  <a href="#" class="dropdown-item">Archive</a>
+              </div>
+              
             </div>          
         </div>
       </div>
   </div>
 </div>
 
+<!-- update modal -->
+
+<div class="modal fade add-update-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">New Update</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">            
+            <textarea type="text" class="form-control" id="update"  name="update" [(ngModel)]="updateText" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"  (click)="addUpdate(selectedActivity)">Save
+          <i class="fa fa-circle-o-notch fa-spin" *ngIf="isSaving"></i>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 

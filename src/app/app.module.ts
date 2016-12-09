@@ -22,6 +22,7 @@ import { TeamViewerComponent } from './team-viewer/team-viewer.component';
 import { DeleteTeamComponent } from './delete-team/delete-team.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AddActivityComponent } from './add-activity/add-activity.component';
+import { UpdateBoxComponent } from './update-box/update-box.component';
 
 const myFirebaseAuthConfig = {
   provider: AuthProviders.Password,
@@ -33,7 +34,7 @@ const myFirebaseAuthConfig = {
   declarations: [
     AppComponent,
     LoginComponent,    
-    DesktopComponent, NavbarComponent, AddTeamComponent, TeamListComponent, TeamViewerComponent, DeleteTeamComponent, ProfileComponent, AddActivityComponent
+    DesktopComponent, NavbarComponent, AddTeamComponent, TeamListComponent, TeamViewerComponent, DeleteTeamComponent, ProfileComponent, AddActivityComponent, UpdateBoxComponent
   ],
   imports: [
     BrowserModule,
