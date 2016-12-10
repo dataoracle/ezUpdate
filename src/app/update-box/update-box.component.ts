@@ -1,5 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
 import {AngularFire, FirebaseListObservable} from 'angularfire2'
+import {Update} from '../models/update';
 
 @Component({
   selector: 'app-update-box',
@@ -13,8 +14,10 @@ export class UpdateBoxComponent implements OnInit {
   teamKey:string;
   activityKey:string;
   lastUpdate: string;
-
+  user: any;
   updates: FirebaseListObservable<any[]>;
+  updateCount: number;
+  updatePresent: boolean = false;
 
   constructor(public af: AngularFire) { 
   }
@@ -31,11 +34,25 @@ export class UpdateBoxComponent implements OnInit {
 
     this.updates.subscribe((update) => {
       if (update.length > 0) {
-        this.lastUpdate = update[0].$value;
+        this.updateCount = update.length;
+        this.updatePresent = true;
+        this.af.database.object('/users/'+update[0].createdBy)
+          .subscribe((user) => {
+            this.user = user;
+          })
+        this.lastUpdate = update[0].updateText;
       } else {
         this.lastUpdate = "No updates yet! :\\";
       }
     })    
+  }
+
+  calloutClasses() {
+    let classes = {
+      "callout": this.updatePresent,
+      "top-left": this.updatePresent
+    };
+    return classes;
   }
 
 }

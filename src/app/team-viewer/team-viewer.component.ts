@@ -1,8 +1,10 @@
 import { Component, OnInit} from '@angular/core';
-import {teamListService} from '../navbar/team-list/team-list.service'
-import {Team} from '../models/team'
-import {AngularFire, FirebaseListObservable} from 'angularfire2'
-import {Activity} from '../models/activity'
+import {teamListService} from '../navbar/team-list/team-list.service';
+import {Team} from '../models/team';
+import {Update} from '../models/update';
+import {AngularFire, FirebaseListObservable} from 'angularfire2';
+import {Activity} from '../models/activity';
+import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-team-viewer',
@@ -20,7 +22,7 @@ export class TeamViewerComponent implements OnInit {
   selectedActivity: string;
   isSaving:boolean = false;
 
-  constructor(private tls: teamListService, public af:AngularFire) { 
+  constructor(private tls: teamListService, public af:AngularFire, public as:AuthService) { 
       this.teamName = tls.isTeamSelectedName;
   }
 
@@ -42,7 +44,8 @@ export class TeamViewerComponent implements OnInit {
   }
   addUpdate(activityKey) {
     this.isSaving = true;
-    this.af.database.list('/teams/'+this.team.$key+'/activities/'+activityKey+'/updates').push(this.updateText)
+    this.af.database.list('/teams/'+this.team.$key+'/activities/'+activityKey+'/updates')
+      .push(new Update(this.as.uid,this.updateText))
       .then(() => {
         this.isSaving = false;
         this.updateText = '';

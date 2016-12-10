@@ -1,3 +1,4 @@
-<p>
+<div [ngClass]="calloutClasses()">
   {{lastUpdate}}
-</p>
+</div>
+<img *ngIf="updatePresent" class="profile-picture" [src]="user.photoURL">
