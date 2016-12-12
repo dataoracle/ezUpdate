@@ -70,3 +70,18 @@ div.callout {
     border:1px solid #ddd;
     margin-right:5px;
 }
+
+.update-information {
+	display:flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.time-ago {
+	font-size:x-small;
+}
+
+.update-wrapper {
+	display:flex;
+	flex-direction: column;
+}

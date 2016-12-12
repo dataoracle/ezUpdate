@@ -7,6 +7,9 @@ import {firebaseConfig} from '../config/firebaseConfig';
 /* Firebase */
 import {AngularFireModule, AuthMethods, AuthProviders} from 'angularfire2';
 
+/* pipes */
+
+import {AgeFormatPipe} from './pipes/ageformat.pipe';
 
 /* app components */
 import { AppComponent } from './app.component';
@@ -34,7 +37,7 @@ const myFirebaseAuthConfig = {
   declarations: [
     AppComponent,
     LoginComponent,    
-    DesktopComponent, NavbarComponent, AddTeamComponent, TeamListComponent, TeamViewerComponent, DeleteTeamComponent, ProfileComponent, AddActivityComponent, UpdateBoxComponent
+    DesktopComponent, NavbarComponent, AddTeamComponent, TeamListComponent, TeamViewerComponent, DeleteTeamComponent, ProfileComponent, AddActivityComponent, UpdateBoxComponent, AgeFormatPipe
   ],
   imports: [
     BrowserModule,

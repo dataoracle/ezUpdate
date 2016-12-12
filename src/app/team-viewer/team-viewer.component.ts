@@ -40,8 +40,13 @@ export class TeamViewerComponent implements OnInit {
   openModalUpdate(activityKey) {
     this.selectedActivity = activityKey;
     $('.add-update-modal').modal('show');
-
   }
+
+  openModalDelete(activityKey) {
+    this.selectedActivity = activityKey;
+    $('.delete-activity').modal('show');
+  }
+
   addUpdate(activityKey) {
     this.isSaving = true;
     this.af.database.list('/teams/'+this.team.$key+'/activities/'+activityKey+'/updates')
@@ -52,5 +57,17 @@ export class TeamViewerComponent implements OnInit {
         $('.add-update-modal').modal('hide');
       })
   }
+
+  deleteActivity(activityKey) {
+    this.isSaving = true;
+    this.af.database.object('/teams/'+this.team.$key+'/activities/'+activityKey)
+      .remove()
+      .then(()=> {
+        this.isSaving =false;
+        $('.delete-activity').modal('hide');
+      })
+  }
+
+  
 
 }

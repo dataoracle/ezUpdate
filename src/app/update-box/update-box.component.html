@@ -1,4 +1,9 @@
-<div [ngClass]="calloutClasses()">
+<div class="update-wrapper">
+  <div [ngClass]="calloutClasses()">
   {{lastUpdate}}
+  </div>
+  <div class="update-information" *ngIf="updatePresent">
+   <img  class="profile-picture" [src]="user.photoURL">
+   <div class="time-ago">{{lastUpdateOn | ageFormat}}</div>
+  </div>
 </div>
-<img *ngIf="updatePresent" class="profile-picture" [src]="user.photoURL">

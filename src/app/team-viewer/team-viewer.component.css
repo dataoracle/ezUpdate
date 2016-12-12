@@ -9,3 +9,7 @@
 .settings-group {
     border:none;
 }
+
+.no-bottom-padding {
+    padding-bottom:0px;
+}

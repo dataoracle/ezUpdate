@@ -1,6 +1,7 @@
 import { Component, OnInit,Input } from '@angular/core';
 import {AngularFire, FirebaseListObservable} from 'angularfire2'
 import {Update} from '../models/update';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-update-box',
@@ -18,6 +19,7 @@ export class UpdateBoxComponent implements OnInit {
   updates: FirebaseListObservable<any[]>;
   updateCount: number;
   updatePresent: boolean = false;
+  lastUpdateOn: string;
 
   constructor(public af: AngularFire) { 
   }
@@ -41,6 +43,8 @@ export class UpdateBoxComponent implements OnInit {
             this.user = user;
           })
         this.lastUpdate = update[0].updateText;
+        //this.lastUpdateOn = moment().format(update[0].createdOn
+        this.lastUpdateOn = update[0].createdOn;
       } else {
         this.lastUpdate = "No updates yet! :\\";
       }
