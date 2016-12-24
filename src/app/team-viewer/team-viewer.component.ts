@@ -6,6 +6,8 @@ import {AngularFire, FirebaseListObservable} from 'angularfire2';
 import {Activity} from '../models/activity';
 import {AuthService} from '../auth.service';
 
+declare var Masonry:any;
+
 @Component({
   selector: 'app-team-viewer',
   templateUrl: './team-viewer.component.html',
@@ -27,12 +29,12 @@ export class TeamViewerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tls.selectedTeam$.subscribe((team) => {     
+     this.tls.selectedTeam$.subscribe((team) => {     
      this.isTeamSelected = true;
      this.team = team;
      this.activities = this.af.database.list('/teams/'+this.team.$key+'/activities');
      this.activities.subscribe((activity) => {       
-       this.hasActivities = activity.length > 0;        
+       this.hasActivities = activity.length > 0;
      })
     })
   }

@@ -20,27 +20,26 @@
 
 <div *ngIf="isTeamSelected && hasActivities">
   <h1>Priority Activitities</h1>
-  <div class="row">    
-      <div  class="card-columns">        
-        <div *ngFor="let activity of activities | async" class="card clearfix">
-          <img class="card-img-top" style="width:100%;height:auto;" [src]="activity.imageURL" alt="card image">
-          <div class="card-block no-bottom-padding">                   
-            <h5 class="card-title">{{activity.name}}</h5>
-            <app-update-box [activity]="team.$key+'|'+activity.$key"></app-update-box>       
-          </div>
-            <div class="btn-group float-xs-right">
-              <button class="btn btn-secondary btn-sm dropdown-toggle settings-group " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-gear"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" (click)="openModalUpdate(activity.$key)" >New Update</a>
-                  <a class="dropdown-item">Archive</a>
-                  <a class="dropdown-item text-danger" (click)="openModalDelete(activity.$key)">Delete</a>
-              </div>
-              
-            </div>          
+  <div class="row">      
+    <div *ngFor="let activity of activities | async" class="col-sm-12 col-md-6 col-lg-4">
+      <div class="card clearfix">
+        <img class="card-img-top" style="width:100%;height:auto;" [src]="activity.imageURL" alt="card image">
+        <div class="card-block no-bottom-padding">                   
+          <h5 class="card-title">{{activity.name}}</h5>
+          <app-update-box [activity]="team.$key+'|'+activity.$key"></app-update-box>       
         </div>
+          <div class="btn-group float-xs-right">
+            <button class="btn btn-secondary btn-sm dropdown-toggle settings-group " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-gear"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" (click)="openModalUpdate(activity.$key)" >New Update</a>
+                <a class="dropdown-item">Archive</a>
+                <a class="dropdown-item text-danger" (click)="openModalDelete(activity.$key)">Delete</a>
+            </div>       
+          </div>
       </div>
+    </div>
   </div>
 </div>
 
