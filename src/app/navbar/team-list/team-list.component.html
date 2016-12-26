@@ -18,9 +18,42 @@
     Settings
   </button>
   <div class="dropdown-menu">
-     <a class="dropdown-item" >Invite someone</a>
+     <a class="dropdown-item" data-toggle="modal" data-target=".invite-user-modal" >Invite someone</a>
      <a class="dropdown-item" data-toggle="modal" data-target=".add-activity-modal" >New Activity</a>
      <div class="dropdown-divider" *ngIf="this.isTeamSelectedOwner"></div>
      <a class="dropdown-item custom-link-danger" *ngIf="this.isTeamSelectedOwner" data-toggle="modal" data-target=".delete-team-modal">Delete Team</a>
   </div>
 </div>
+
+<div class="modal fade invite-user-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Invite User</h4>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="newUser">
+          <div class="form-group">
+            <label for="assigned_user_email">Search user by email</label>
+            <input type="text" class="form-control" id="assigned_user_email" required  name="assigned_user_email" formControlName="assignedEmail"
+            [class.input-invalid] = "newUser.controls.assignedEmail.invalid && newUser.controls.assignedEmail.touched" [class.input-valid]="newUser.controls.assignedEmail.valid">
+            <div *ngIf="newUser.controls.assignedEmail.pending"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+            <div *ngIf="newUser.controls.assignedEmail.invalid && newUser.controls.assignedEmail.touched">No user found</div>
+            <ul *ngIf="userIsFound" class="list-group assigned-user">
+              <li class="list-group-item"><img class="profile-picture" [src]="user.photoURL">{{user.displayName}}</li>
+            </ul>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"  (click)="inviteUser()" [disabled]="!newUser.valid">Invite
+          <i class="fa fa-circle-o-notch fa-spin" *ngIf="isSaving"></i>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

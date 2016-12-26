@@ -6,8 +6,10 @@ import {Team} from '../../models/team'
 import {AuthService} from '../../auth.service';
 import {Observable} from 'rxjs/Rx';
 import {Subject} from 'rxjs/Subject';
+import {FormGroup, FormBuilder, Validators,FormControl} from '@angular/forms'
 
 import {teamListService} from './team-list.service';
+import {UtilsService} from '../../utils.service';
 
 @Component({
   selector: 'app-team-list',
@@ -25,7 +27,15 @@ export class TeamListComponent implements OnInit {
   isTeamSelected:boolean = false;
   isTeamSelectedOwner:boolean = false;
 
-  constructor(private as: AuthService, private tls: teamListService) { 
+  newUser: FormGroup;
+  user:any;
+  userIsFound:boolean = false;
+  isSaving:boolean = false;
+
+  constructor(private as: AuthService, private tls: teamListService,fb:FormBuilder, public utils:UtilsService ) { 
+    this.newUser = fb.group({
+      assignedEmail:[null,Validators.required, this.validateUser.bind(this)]
+    })
   }
 
   ngOnInit() {
@@ -38,5 +48,34 @@ export class TeamListComponent implements OnInit {
       this.isTeamSelected = true;
       this.isTeamSelectedOwner = this.selectedTeam.created_by == this.as.uid;
   }
+
+  validateUser(control:FormControl) {
+    return new Promise((resolve,reject) => {
+      this.utils.asyncUser(control)
+        .then((user) => {
+          this.user = user;
+          this.userIsFound = true;
+          resolve(null)
+        })
+        .catch((error) => {
+          this.userIsFound = false;
+          resolve(error);
+        })
+    });
+  }
+
+  inviteUser() {
+    this.isSaving = true;
+    this.utils.addTeamToUser(this.user.key, this.selectedTeam.$key)
+      .then(() => {
+        this.isSaving = false;
+        this.newUser.reset()
+        $('.invite-user-modal').modal('hide');
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
 
 }

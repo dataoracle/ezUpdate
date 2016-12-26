@@ -3,7 +3,7 @@
   {{lastUpdate}}
   </div>
   <div class="update-information" *ngIf="updatePresent">
-   <img  class="profile-picture" [src]="user.photoURL">
+   <img  class="profile-picture" [src]="userPhoto">
    <div class="time-ago">{{lastUpdateOn | ageFormat}}</div>
   </div>
 </div>

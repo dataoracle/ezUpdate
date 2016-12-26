@@ -27,6 +27,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { AddActivityComponent } from './add-activity/add-activity.component';
 import { UpdateBoxComponent } from './update-box/update-box.component';
 
+/* services */
+import {UtilsService} from './utils.service';
+
 const myFirebaseAuthConfig = {
   provider: AuthProviders.Password,
   method: AuthMethods.Password,
@@ -47,7 +50,7 @@ const myFirebaseAuthConfig = {
     appRouting,
     AngularFireModule.initializeApp(firebaseConfig,myFirebaseAuthConfig)
   ],
-  providers: [FormBuilder, appRoutingProviders],
+  providers: [FormBuilder, appRoutingProviders,UtilsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

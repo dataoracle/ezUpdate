@@ -16,6 +16,7 @@ export class UpdateBoxComponent implements OnInit {
   activityKey:string;
   lastUpdate: string;
   user: any;
+  userPhoto:string = '';
   updates: FirebaseListObservable<any[]>;
   updateCount: number;
   updatePresent: boolean = false;
@@ -27,7 +28,6 @@ export class UpdateBoxComponent implements OnInit {
   ngOnInit() {
     this.teamKey = this.activity.split('|')[0];
     this.activityKey = this.activity.split('|')[1];
-
     this.updates = this.af.database.list('/teams/'+this.teamKey+'/activities/'+this.activityKey+'/updates',
     {query: {
       orderByKey:true,
@@ -41,6 +41,7 @@ export class UpdateBoxComponent implements OnInit {
         this.af.database.object('/users/'+update[0].createdBy)
           .subscribe((user) => {
             this.user = user;
+            this.userPhoto = user.photoURL;
           })
         this.lastUpdate = update[0].updateText;
         //this.lastUpdateOn = moment().format(update[0].createdOn

@@ -3,7 +3,7 @@ import {Activity} from '../models/activity';
 import {AngularFire, FirebaseListObservable} from 'angularfire2';
 import {FormGroup, FormBuilder, Validators,FormControl} from '@angular/forms'
 import {teamListService} from '../navbar/team-list/team-list.service'
-
+import {UtilsService} from '../utils.service'
 
 @Component({
   selector: 'app-add-activity',
@@ -23,11 +23,11 @@ export class AddActivityComponent implements OnInit {
   user: any;
   userIsFound: boolean;
 
-  constructor(fb:FormBuilder, public af:AngularFire, public tls:teamListService) {
+  constructor(fb:FormBuilder, public af:AngularFire, public tls:teamListService, public utils:UtilsService) {
     this.newActivity = fb.group({
       name:['',Validators.required],
       description:[],
-      assignedEmail:[null,Validators.required, this.asyncUser.bind(this)]
+      assignedEmail:[null,Validators.required, this.validateUser.bind(this)]
     })
    }
 
@@ -55,27 +55,19 @@ export class AddActivityComponent implements OnInit {
       this.user = null;
   }
 
-  asyncUser(control: FormControl) {
-        var debounceTimeout;
-        clearTimeout(debounceTimeout);
-
-        var fb = firebase.database().ref();
-        return new Promise((resolve, reject) => {
-            debounceTimeout = setTimeout(() => {
-                fb.child('users').orderByChild('emailAddress').equalTo(control.value).once('value', (snap) => {
-                    if (snap.val()) {
-                        this.user = snap.val()[Object.keys(snap.val())[0]];
-                        this.user.key = Object.keys(snap.val())[0];
-                        this.userIsFound = true;
-                        resolve(null)
-                    } else {
-                        this.userIsFound = false;
-                        this.user = null;
-                        resolve({useNotFound:true})
-                    }
-                }); 
-            },1000);
-        });
-    }
-
+  validateUser(control:FormControl) {
+    return new Promise((resolve,reject) => {
+      this.utils.asyncUser(control)
+        .then((user) => {
+          this.user = user;
+          this.userIsFound = true;
+          resolve(null)
+        })
+        .catch((error) => {
+          this.userIsFound = false;
+          resolve(error);
+        })
+    });
+  }
+  
 }
