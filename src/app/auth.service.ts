@@ -23,8 +23,7 @@ export class AuthService {
   constructor(public af: AngularFire,public router: Router) {}
   
   login(user, password) {
-    this.af.auth.login({ email: user, password:password })
-        .catch((error) => console.log(error));
+    return this.af.auth.login({ email: user, password:password });
   }  
 
   logout() {

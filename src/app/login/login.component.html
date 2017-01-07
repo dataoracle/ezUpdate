@@ -13,6 +13,9 @@
         </div>
       </div>
     </div>
-  </div>          
+    <div class="col-md-4 offset-md-4" *ngIf="errorMessage">
+      <div class="alert alert-danger margin-top">{{errorMessage}}</div>
+    </div>
+  </div>    
 </div>
 

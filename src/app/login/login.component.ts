@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   userCtrl = new FormControl(this.user);
   passCtrl = new FormControl(this.password);  
+  errorMessage: string;
 
   constructor(fb: FormBuilder, public authService: AuthService, public af:AngularFire,private router: Router) {
     this.loginForm = new FormGroup({
@@ -33,8 +34,7 @@ export class LoginComponent implements OnInit {
             this.authService.email = user.auth.email;
             this.authService.name = user.auth.displayName;
             this.authService.photoURL = user.auth.photoURL;
-            this.initUserPreferences(user.auth, user.uid);                        
-            this.authService.router.navigate(['/home']);    
+            this.initUserPreferences(user.auth, user.uid);                         
         } else {
             this.authService.isLoggedIn = false;
         }
@@ -65,7 +65,14 @@ export class LoginComponent implements OnInit {
   
 
   login() {
-    this.authService.login(this.user, this.password);
+    this.authService.login(this.user, this.password)
+      .then((authState) => {
+        this.authService.router.navigate(['/home']);  
+      })
+      .catch((error) => {
+        console.log('error');
+        this.errorMessage = error.message;
+      });
   }
 
   logout() {        
