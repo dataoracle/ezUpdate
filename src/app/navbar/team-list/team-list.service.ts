@@ -1,52 +1,33 @@
-import { Injectable,} from '@angular/core';
+import { Injectable,OnInit} from '@angular/core';
 import { Subject }    from 'rxjs/Subject';
 import {Team} from '../../models/team';
 import {AngularFire, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2'
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs/Observable';
 import {AuthService} from '../../auth.service';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/last';
+import 'rxjs/add/observable/forkJoin';
 
 @Injectable()
 export class teamListService {
-  
-  private selectedTeam = new Subject<Team>();
-  public availableTeams: Team[] = [];
+
   public isTeamSelected: Boolean = false;
   public isTeamSelectedName: string = 'Teams';
   public isTeamSelectedKey: string;
-  public teamsIDsSubs;
-  public teamsSubs;
-  public team; 
-  teamsIds: Observable<any[]>;
-
-
-  teams: FirebaseListObservable<any>;
+  public selectedTeam = new Subject<Team>();
+  public userTeams: Observable<any>;
   
-  constructor(public af: AngularFire, public as: AuthService) {
-    const userTeamIDs = new Subject<string>();
-    this.teams = af.database.list('/teams', {
-      query : {
-        orderByKey: true,
-        equalTo: userTeamIDs
-      }
-    })
-
-    this.teamsSubs = this.teams.subscribe(queriedItems => {
-      if (queriedItems.length > 0) {
-        console.log('pushing -> ' + queriedItems[0].name)
-        this.availableTeams.push(queriedItems[0]);
-      }
-    });
-
-    this.teamsIds = af.database.list('/users/'+as.uid+'/teams');
-    this.teamsIDsSubs = this.teamsIds.subscribe(keys => {
-      console.log('processing key');
-      keys.map(_key => {
-        userTeamIDs.next(_key.$value);
-      })
-    })
-
+  constructor(private af: AngularFire, private as: AuthService) {
+    this.userTeams = this.af.database.list('/users/' + this.as.uid + '/teams')
+      .map(teams => {
+        teams.map(team => {
+          team.teamObject = this.af.database.object('/teams/'+team.$value);
+        })
+        return teams;
+      });  
   }
-  availableTeams$ =  Observable.of(this.availableTeams);
+
   selectedTeam$ = this.selectedTeam.asObservable();
   
   
@@ -57,16 +38,9 @@ export class teamListService {
     this.selectedTeam.next(team);
     this.isTeamSelected = true;
   }
-
-  getAvailableTeams() {
-    return this.availableTeams;
-  }
   
   removeTeam(key:string) {
     this.af.database.object('/teams/'+key).remove();
-    this.availableTeams = this.availableTeams.filter(t => {
-      return t.$key != key;
-    })
     this.isTeamSelected = false;
     this.isTeamSelectedName = 'Teams';
   }
@@ -75,7 +49,6 @@ export class teamListService {
     const teams = this.af.database.list('teams');    
       teams.push(new Team(teamName ,this.as.uid))
         .then((newTeam) => {
-          this.availableTeams$ =  Observable.of(this.availableTeams);
           console.log(newTeam);
           this.addTeamToUser(newTeam.key, this.as.uid);
           this.selectTeam(newTeam);
@@ -83,9 +56,11 @@ export class teamListService {
       });       
   }
   addTeamToUser(teamKey, userId) {
-    this.availableTeams = [];
     this.af.database.list('/users/'+userId+'/teams').push(teamKey);
   }
 
+  getTeam(teamKey:string) {
+     return this.af.database.object('teams/'+teamKey);
+  }
 
 }

@@ -42,4 +42,17 @@ export class UtilsService {
     })
   }
 
+  setUsersDefaultTeam(userKey:string, teamKey:string) {
+      var fb = firebase.database().ref();
+      return new Promise((resolve,reject) => {
+          fb.child('users/'+userKey+'/defaultTeam').set(teamKey)
+            .then(() => {
+                resolve(null);
+            })
+            .catch((error) => {
+                reject(error);
+            })
+      })
+  }
+
 }

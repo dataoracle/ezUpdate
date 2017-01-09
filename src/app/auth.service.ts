@@ -16,6 +16,7 @@ export class AuthService {
   email: string;  
   name: string;
   photoURL:string;
+  userObject:any;
   
   // store the URL so we can redirect after logging in
   redirectUrl: string;

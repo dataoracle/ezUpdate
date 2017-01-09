@@ -4,14 +4,15 @@
       {{tls.isTeamSelectedName}}
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">    
-      <a class="dropdown-item" *ngFor="let team of tls.availableTeams; let i=index" (click)="changeTeam(i)">
-        {{ team.name }}
+      <a  *ngFor="let team of tls.userTeams | async; let i=index">
+        <a class="dropdown-item" *ngIf="(team.teamObject | async)?.name"  (click)="changeTeam(team.teamObject)">{{(team.teamObject | async )?.name}}</a>
       </a>
       <a class="dropdown-item" href="#">Join a Team</a>
       <a class="dropdown-item"  data-toggle="modal" data-target=".add-team-modal">Create a Team</a>      
     </div>
   </li>
 </ul>
+
 
 <div class="btn-group custom-btn-settings" *ngIf="this.isTeamSelected">
   <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -20,10 +21,12 @@
   <div class="dropdown-menu">
      <a class="dropdown-item" data-toggle="modal" data-target=".invite-user-modal" >Invite someone</a>
      <a class="dropdown-item" data-toggle="modal" data-target=".add-activity-modal" >New Activity</a>
+     <a class="dropdown-item" (click)="setDefault()" >Set as default</a>
      <div class="dropdown-divider" *ngIf="this.isTeamSelectedOwner"></div>
      <a class="dropdown-item custom-link-danger" *ngIf="this.isTeamSelectedOwner" data-toggle="modal" data-target=".delete-team-modal">Delete Team</a>
   </div>
 </div>
+
 
 <div class="modal fade invite-user-modal">
   <div class="modal-dialog" role="document">

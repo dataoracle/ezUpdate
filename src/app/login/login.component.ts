@@ -27,14 +27,18 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    var auth = this.authService.af.auth.subscribe( (user) => {
+    var auth = this.authService.af.auth.subscribe((user) => {
         if (user) {
             this.authService.uid = user.uid;
             this.authService.isLoggedIn = true;
             this.authService.email = user.auth.email;
             this.authService.name = user.auth.displayName;
             this.authService.photoURL = user.auth.photoURL;
-            this.initUserPreferences(user.auth, user.uid);                         
+            this.initUserPreferences(user.auth, user.uid); 
+            this.af.database.object('users/'+user.uid)
+              .subscribe((user) => {
+                this.authService.userObject = user;
+              })                       
         } else {
             this.authService.isLoggedIn = false;
         }
@@ -46,7 +50,6 @@ export class LoginComponent implements OnInit {
     //itemObservable.update({ emailAddress: user.email , displayName:user.displayName,photoURL:user.photoURL});
 
     if (!this.authService.photoURL) {
-      console.log('changing picture...');
       var photoRef = 'images/default.jpg';
       this.authService.name = user.displayName || user.email;
       var storage = firebase.storage();

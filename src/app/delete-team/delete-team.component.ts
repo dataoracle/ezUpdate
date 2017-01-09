@@ -22,7 +22,6 @@ teamToDelete: Team;
   
   deleteTeam() {
     this.tls.removeTeam(this.teamToDelete.$key);
-    //window.location.reload();
   }
 
 

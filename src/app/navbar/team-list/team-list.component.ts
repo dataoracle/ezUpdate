@@ -1,6 +1,7 @@
 import { Component, OnInit, Output,EventEmitter } from '@angular/core';
 import {AngularFire, FirebaseListObservable,FirebaseObjectObservable} from 'angularfire2'
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/filter';
 import {Team} from '../../models/team'
 import {AuthService} from '../../auth.service';
@@ -19,9 +20,9 @@ import {UtilsService} from '../../utils.service';
 export class TeamListComponent implements OnInit {
   teamIds: Observable<any[]>;  
   teams: FirebaseListObservable<any>;
-  userTeams: Observable<Team[]>;
+  //userTeams: Observable<any[]>;
   team = Team;
-  
+  availableTeams: string[] = [];
   selectedTeam: Team;
   selectedTeamName:string = 'Teams';
   isTeamSelected:boolean = false;
@@ -31,22 +32,40 @@ export class TeamListComponent implements OnInit {
   user:any;
   userIsFound:boolean = false;
   isSaving:boolean = false;
+  
 
-  constructor(private as: AuthService, private tls: teamListService,fb:FormBuilder, public utils:UtilsService ) { 
+  constructor(private as: AuthService, private tls: teamListService,fb:FormBuilder, public utils:UtilsService, private af:AngularFire) { 
     this.newUser = fb.group({
       assignedEmail:[null,Validators.required, this.validateUser.bind(this)]
     })
   }
 
   ngOnInit() {
+      
+    if (this.as.userObject.hasOwnProperty('defaultTeam') && this.as.userObject.defaultTeam) {
+      this.changeToDefault(this.as.userObject.defaultTeam);
+    }
+
   }
 
-  changeTeam(index) {   
-      this.selectedTeam = this.tls.availableTeams[index];
-      this.tls.selectTeam(this.selectedTeam);
-      this.selectedTeamName = this.selectedTeam.name;
-      this.isTeamSelected = true;
-      this.isTeamSelectedOwner = this.selectedTeam.created_by == this.as.uid;
+  changeToDefault(teamKey:string) {
+    this.tls.getTeam(teamKey)
+      .subscribe((team) => {
+        this.selectedTeam = team;
+        this.tls.selectTeam(team);
+        this.isTeamSelected = true;
+        this.isTeamSelectedOwner = this.selectedTeam.created_by == this.as.uid;
+      });
+  }
+
+  changeTeam(team:Observable<Team>) {   
+      team.take(1).subscribe(team => {
+        this.selectedTeam = team;
+        this.tls.selectTeam(this.selectedTeam);
+        this.selectedTeamName = this.selectedTeam.name;
+        this.isTeamSelected = true;
+        this.isTeamSelectedOwner = this.selectedTeam.created_by == this.as.uid;
+      });
   }
 
   validateUser(control:FormControl) {
@@ -71,6 +90,16 @@ export class TeamListComponent implements OnInit {
         this.isSaving = false;
         this.newUser.reset()
         $('.invite-user-modal').modal('hide');
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  setDefault() {
+    this.utils.setUsersDefaultTeam(this.as.uid, this.selectedTeam.$key)
+      .then(() => {
+        console.log('success');
       })
       .catch((error) => {
         console.log(error);
