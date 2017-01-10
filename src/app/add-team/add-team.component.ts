@@ -10,15 +10,22 @@ import {teamListService} from '../navbar/team-list/team-list.service';
 })
 export class AddTeamComponent implements OnInit {
 
+  isSaving:boolean = false;
+  team_name:string; 
+
   constructor(public af: AngularFire, public as: AuthService, public tls: teamListService) { }
 
   ngOnInit() {
   }
-
-  team_name:string; 
   
   addTeam() {
-   this.tls.addTeam(this.team_name);       
+   this.isSaving = true;
+   this.tls.addTeam(this.team_name)
+    .then(() => {
+      this.isSaving = false;
+      $('.add-team-modal').modal('hide');
+      this.team_name = null;
+    })       
   }
 
 

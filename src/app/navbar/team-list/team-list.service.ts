@@ -40,20 +40,26 @@ export class teamListService {
   }
   
   removeTeam(key:string) {
-    this.af.database.object('/teams/'+key).remove();
     this.isTeamSelected = false;
     this.isTeamSelectedName = 'Teams';
+    return this.af.database.object('/teams/'+key).remove();
   }
   
   addTeam(teamName) {
-    const teams = this.af.database.list('teams');    
-      teams.push(new Team(teamName ,this.as.uid))
-        .then((newTeam) => {
-          console.log(newTeam);
-          this.addTeamToUser(newTeam.key, this.as.uid);
-          this.selectTeam(newTeam);
-          this.isTeamSelectedName = teamName;
-      });       
+    return new Promise((resolve, reject) => {
+      const teams = this.af.database.list('teams');    
+        teams.push(new Team(teamName ,this.as.uid))
+          .then((newTeam) => {
+            this.addTeamToUser(newTeam.key, this.as.uid);
+            this.selectTeam(newTeam);
+            this.isTeamSelectedName = teamName;
+            resolve(null);
+          })
+          .catch((error) => {
+            reject(error);
+          });  
+    })
+     
   }
   addTeamToUser(teamKey, userId) {
     this.af.database.list('/users/'+userId+'/teams').push(teamKey);

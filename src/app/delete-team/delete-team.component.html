@@ -12,8 +12,11 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger"  (click)="deleteTeam()">Delete</button>
+        <button type="button" class="btn btn-danger"  (click)="deleteTeam()">Delete
+          <i class="fa fa-circle-o-notch fa-spin" *ngIf="isSaving"></i>
+        </button>
       </div>
+      <div class="alert alert-danger" *ngIf="isError">{{errorMessage}}</div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

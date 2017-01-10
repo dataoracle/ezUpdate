@@ -18,7 +18,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary"  (click)="addTeam()">Save changes</button>
+        <button type="button" class="btn btn-primary"  (click)="addTeam()">Save changes
+          <i class="fa fa-circle-o-notch fa-spin" *ngIf="isSaving"></i>
+        </button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

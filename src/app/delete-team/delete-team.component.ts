@@ -10,6 +10,9 @@ import {Team} from '../models/team';
 export class DeleteTeamComponent implements OnInit {
 
 teamToDelete: Team;
+isSaving:boolean = false;
+isError:boolean = false;
+errorMessage:string = '';
 
   constructor(public tls: teamListService ) { 
     tls.selectedTeam$.subscribe(t => {
@@ -21,7 +24,17 @@ teamToDelete: Team;
   }
   
   deleteTeam() {
-    this.tls.removeTeam(this.teamToDelete.$key);
+    this.isSaving = true;
+    this.tls.removeTeam(this.teamToDelete.$key)
+      .then(() => {
+        this.isSaving = false;
+        $('.delete-team-modal').modal('hide');
+      })
+      .catch((error) => {
+        this.isError = true;
+        this.errorMessage = error.message;
+      })
+      
   }
 
 
