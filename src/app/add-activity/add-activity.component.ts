@@ -4,6 +4,8 @@ import {AngularFire, FirebaseListObservable} from 'angularfire2';
 import {FormGroup, FormBuilder, Validators,FormControl} from '@angular/forms'
 import {teamListService} from '../navbar/team-list/team-list.service'
 import {UtilsService} from '../utils.service'
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/last';
 
 @Component({
   selector: 'app-add-activity',
@@ -41,12 +43,23 @@ export class AddActivityComponent implements OnInit {
             .push(new Activity(this.newActivity.controls['name'].value,
                             this.newActivity.controls['description'].value, 
                             this.user.key, url))
-            .then(() => {
+            .then((activity) => {
                 this.isSaving = false;
                 $('.add-activity-modal').modal('hide');
+                this.markActivityUnread(activity.key);
             })
     })
 
+  }
+
+  markActivityUnread(key) {
+    var fb = firebase.database().ref();
+    this.af.database.object('/teams/'+this.tls.isTeamSelectedKey+'/access',{ preserveSnapshot: true })
+      .subscribe((teamUsers) => {
+        teamUsers.val().forEach((e) => {
+          fb.child('/teams/'+this.tls.isTeamSelectedKey+'/activities/'+key+'/read_status/'+e).set({status:"new"})
+        })
+      })
   }
 
   resetModal(value: any = undefined) {

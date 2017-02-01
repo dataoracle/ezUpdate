@@ -18,13 +18,14 @@
   </p>
 </div>
 
-<div *ngIf="isTeamSelected && hasActivities">
+<div >
   <h1>Priority Activitities</h1>
   <div class="row">      
     <div *ngFor="let activity of activities | async" class="col-sm-12 col-md-6 col-lg-4">
       <div class="card clearfix">
         <img class="card-img-top" style="width:100%;height:auto;" [src]="activity.imageURL" alt="card image">
         <div class="card-block no-bottom-padding">                   
+          <div *ngIf="(activity?.read_status[as.uid])?.status">New!</div>
           <h5 class="card-title">{{activity.name}}</h5>
           <app-update-box [activity]="team.$key+'|'+activity.$key"></app-update-box>       
         </div>

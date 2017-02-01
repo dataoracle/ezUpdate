@@ -21,7 +21,7 @@ export class AddTeamComponent implements OnInit {
   addTeam() {
    this.isSaving = true;
    this.tls.addTeam(this.team_name)
-    .then(() => {
+    .then((newTeam) => {
       this.isSaving = false;
       $('.add-team-modal').modal('hide');
       this.team_name = null;

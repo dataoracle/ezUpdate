@@ -5,6 +5,7 @@ import {Update} from '../models/update';
 import {AngularFire, FirebaseListObservable} from 'angularfire2';
 import {Activity} from '../models/activity';
 import {AuthService} from '../auth.service';
+import {Observable} from 'rxjs/observable';
 
 declare var Masonry:any;
 
@@ -16,7 +17,7 @@ declare var Masonry:any;
 export class TeamViewerComponent implements OnInit {
 
   teamName:string = 'Please select or join a team!';
-  activities: FirebaseListObservable<Activity[]>
+  activities: Observable<any>
   team: Team;
   isTeamSelected: boolean = false;
   hasActivities: boolean;
@@ -33,10 +34,11 @@ export class TeamViewerComponent implements OnInit {
      this.isTeamSelected = true;
      this.team = team;
      this.activities = this.af.database.list('/teams/'+this.team.$key+'/activities');
-     this.activities.subscribe((activity) => {       
-       this.hasActivities = activity.length > 0;
+     this.activities
+       .subscribe((activities) => {     
+       this.hasActivities = activities.length > 0;
+      })
      })
-    })
   }
 
   openModalUpdate(activityKey) {

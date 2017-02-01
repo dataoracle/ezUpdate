@@ -6,6 +6,8 @@ export class Activity {
     last_updated_text: string;
     imageURL:string;
     updates = <any>[];
+    isRead:any
+    $key:string;
 
     constructor(name: string, description: string, assigned_to: string, imageURL: string) {
         this.name = name;

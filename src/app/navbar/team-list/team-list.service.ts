@@ -48,12 +48,14 @@ export class teamListService {
   addTeam(teamName) {
     return new Promise((resolve, reject) => {
       const teams = this.af.database.list('teams');    
-        teams.push(new Team(teamName ,this.as.uid))
+        let team = new Team(teamName, this.as.uid);
+        teams.push(team)
           .then((newTeam) => {
+            team.$key = newTeam.key;
             this.addTeamToUser(newTeam.key, this.as.uid);
-            this.selectTeam(newTeam);
+            this.selectTeam(team);
             this.isTeamSelectedName = teamName;
-            resolve(null);
+            resolve();
           })
           .catch((error) => {
             reject(error);
